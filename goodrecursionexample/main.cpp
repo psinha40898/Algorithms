@@ -1,12 +1,16 @@
 /******************************************************************************
-
+This code illustrates:
+1) The power of recursion
+2) How a better algorithm can drastically speed up things as they scale
+3) unsigned long long
 
 *******************************************************************************/
 
 #include <iostream>
+#include <chrono>
 
 using namespace std;
-int product(int x, int y)
+unsigned long long product(unsigned long long x, unsigned long long y)
 {
     if (y==0){
     return 0;
@@ -18,7 +22,7 @@ int product(int x, int y)
     
     
 }
-int power(int x, int y)
+unsigned long long power(unsigned long long x, unsigned long long y)
 {
     if (y==0){
     return 1;
@@ -29,14 +33,14 @@ int power(int x, int y)
     }
     else
     {
-        cout<<"Recursive call y = power("<<y-1<<")" <<endl;
+    
         return x*power(x,y-1);
     }
     
     
 }
 
-int powerDivideConquer(int base, int exponent)
+unsigned long long powerDivideConquer(unsigned long long base, unsigned long long exponent)
 {
     if (exponent == 0)
     {
@@ -51,8 +55,8 @@ int powerDivideConquer(int base, int exponent)
         return base*base;
     }
     
-    int left;
-    int right;
+    unsigned long long left;
+    unsigned long long right;
     
     if (exponent % 2 == 0)
     {
@@ -72,7 +76,7 @@ int powerDivideConquer(int base, int exponent)
     
 }
 
-int powerDivideConquerLgN(int base, int exponent)
+unsigned long long powerDivideConquerLgN(unsigned long long base, unsigned long long exponent)
 {
     if (exponent == 0)
     {
@@ -87,10 +91,10 @@ int powerDivideConquerLgN(int base, int exponent)
         return base*base;
     }
     
-    int left; 
-    int right;
+    unsigned long long left; 
+    unsigned long long right;
     
-    int temp = powerDivideConquerLgN(base, exponent/2);
+    unsigned long long temp = powerDivideConquerLgN(base, exponent/2);
     
     if(exponent % 2 == 0)
     {
@@ -105,8 +109,26 @@ int powerDivideConquerLgN(int base, int exponent)
 }
 int main()
 {
+    auto start = std::chrono::high_resolution_clock::now();
+    cout<<power(5,16) << endl;
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    std::cout << "Execution time: " << duration << " microseconds" << std::endl;
 
-    cout<<power(5,4);
+
+
+    start = std::chrono::high_resolution_clock::now();
+    cout<<powerDivideConquer(5,16) << endl;
+    end = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    std::cout << "Execution time: " << duration << " microseconds" << std::endl;
+    
+    
+    start = std::chrono::high_resolution_clock::now();
+    cout<<powerDivideConquerLgN(5,16) << endl;
+    end = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start).count();
+    std::cout << "Execution time: " << duration << " microseconds" << std::endl;
 
     return 0;
 }
