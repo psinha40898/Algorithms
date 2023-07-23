@@ -1,0 +1,18 @@
+lst1 = [1, 2, 3]
+lst2 = lst1[:]  # Shallow copy of lst1
+lst2[0] = 99  # A new integer object is created and inserted into lst2
+# print(lst1)  # Outputs: [1, 2, 3]
+# print(lst2)  # Outputs: [99, 2, 3]
+
+lst3 = [[1,2,3], [4,5,6], [99]]
+lst4 = lst3[:]
+
+print(lst3)
+print(lst4)
+#altering the elements in a sublist changes the ORIGINAL object
+#altering the sublist itself simply replaces the original object, so anything still referencing that will be fine
+# lst3[1][0] = 88
+# print(lst4)
+
+# lst4[1][0] = 88
+# print(lst3)
